@@ -21,7 +21,7 @@ namespace NASmonitor {
 		bool connected = "Not connected";
 	private: System::Windows::Forms::Label^ Counter;
 	private: System::Windows::Forms::Label^ RefreshTitle;
-	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
+
 	private: System::Windows::Forms::Label^ statusTitle;
 	private: System::Windows::Forms::Label^ PortTitle;
 	private: System::Windows::Forms::Label^ IPTitle;
@@ -30,6 +30,7 @@ namespace NASmonitor {
 	private: System::Windows::Forms::Label^ port1;
 	private: System::Windows::Forms::Panel^ panel1;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel2;
+	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel3;
 	public:
 		int RefreshCounter = 0;
 
@@ -95,6 +96,15 @@ namespace NASmonitor {
 				   return false;
 			   }
 
+
+			   ULONG ConnectionCount = pSessionInfo->ConnectionCount;
+
+			   if (ConnectionCount == 0)
+			   {
+				   delete[] pSessionInfo;
+				   return false;
+			   }
+
 			   PCHAR TargetAddress = pSessionInfo->Connections->TargetAddress;
 			   USHORT TargetSocket = pSessionInfo->Connections->TargetSocket;
 
@@ -128,7 +138,6 @@ private: System::ComponentModel::IContainer^ components;
 			   this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			   this->Counter = (gcnew System::Windows::Forms::Label());
 			   this->RefreshTitle = (gcnew System::Windows::Forms::Label());
-			   this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			   this->statusTitle = (gcnew System::Windows::Forms::Label());
 			   this->PortTitle = (gcnew System::Windows::Forms::Label());
 			   this->IPTitle = (gcnew System::Windows::Forms::Label());
@@ -137,9 +146,10 @@ private: System::ComponentModel::IContainer^ components;
 			   this->port1 = (gcnew System::Windows::Forms::Label());
 			   this->panel1 = (gcnew System::Windows::Forms::Panel());
 			   this->tableLayoutPanel2 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			   this->tableLayoutPanel1->SuspendLayout();
+			   this->tableLayoutPanel3 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			   this->panel1->SuspendLayout();
 			   this->tableLayoutPanel2->SuspendLayout();
+			   this->tableLayoutPanel3->SuspendLayout();
 			   this->SuspendLayout();
 			   // 
 			   // timer1
@@ -167,36 +177,14 @@ private: System::ComponentModel::IContainer^ components;
 			   this->RefreshTitle->TabIndex = 6;
 			   this->RefreshTitle->Text = L"Refresh Counter:";
 			   // 
-			   // tableLayoutPanel1
-			   // 
-			   this->tableLayoutPanel1->BackColor = System::Drawing::Color::Transparent;
-			   this->tableLayoutPanel1->ColumnCount = 3;
-			   this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				   59.17603F)));
-			   this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				   40.82397F)));
-			   this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
-				   119)));
-			   this->tableLayoutPanel1->Controls->Add(this->statusTitle, 2, 0);
-			   this->tableLayoutPanel1->Controls->Add(this->PortTitle, 1, 0);
-			   this->tableLayoutPanel1->Controls->Add(this->IPTitle, 0, 0);
-			   this->tableLayoutPanel1->ForeColor = System::Drawing::Color::Black;
-			   this->tableLayoutPanel1->Location = System::Drawing::Point(11, 3);
-			   this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
-			   this->tableLayoutPanel1->RowCount = 2;
-			   this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
-			   this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
-			   this->tableLayoutPanel1->Size = System::Drawing::Size(387, 43);
-			   this->tableLayoutPanel1->TabIndex = 7;
-			   // 
 			   // statusTitle
 			   // 
 			   this->statusTitle->AutoSize = true;
 			   this->statusTitle->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				   static_cast<System::Byte>(0)));
-			   this->statusTitle->Location = System::Drawing::Point(270, 0);
+			   this->statusTitle->Location = System::Drawing::Point(296, 0);
 			   this->statusTitle->Name = L"statusTitle";
-			   this->statusTitle->Size = System::Drawing::Size(66, 23);
+			   this->statusTitle->Size = System::Drawing::Size(66, 24);
 			   this->statusTitle->TabIndex = 1;
 			   this->statusTitle->Text = L"Status";
 			   // 
@@ -205,9 +193,9 @@ private: System::ComponentModel::IContainer^ components;
 			   this->PortTitle->AutoSize = true;
 			   this->PortTitle->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				   static_cast<System::Byte>(0)));
-			   this->PortTitle->Location = System::Drawing::Point(161, 0);
+			   this->PortTitle->Location = System::Drawing::Point(143, 0);
 			   this->PortTitle->Name = L"PortTitle";
-			   this->PortTitle->Size = System::Drawing::Size(47, 23);
+			   this->PortTitle->Size = System::Drawing::Size(47, 24);
 			   this->PortTitle->TabIndex = 3;
 			   this->PortTitle->Text = L"Port";
 			   // 
@@ -218,7 +206,7 @@ private: System::ComponentModel::IContainer^ components;
 				   static_cast<System::Byte>(0)));
 			   this->IPTitle->Location = System::Drawing::Point(3, 0);
 			   this->IPTitle->Name = L"IPTitle";
-			   this->IPTitle->Size = System::Drawing::Size(28, 23);
+			   this->IPTitle->Size = System::Drawing::Size(28, 24);
 			   this->IPTitle->TabIndex = 0;
 			   this->IPTitle->Text = L"IP";
 			   // 
@@ -228,7 +216,7 @@ private: System::ComponentModel::IContainer^ components;
 			   this->Status1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				   static_cast<System::Byte>(0)));
 			   this->Status1->ForeColor = System::Drawing::Color::Red;
-			   this->Status1->Location = System::Drawing::Point(270, 0);
+			   this->Status1->Location = System::Drawing::Point(296, 0);
 			   this->Status1->Name = L"Status1";
 			   this->Status1->Size = System::Drawing::Size(24, 24);
 			   this->Status1->TabIndex = 1;
@@ -250,7 +238,7 @@ private: System::ComponentModel::IContainer^ components;
 			   this->port1->AutoSize = true;
 			   this->port1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				   static_cast<System::Byte>(0)));
-			   this->port1->Location = System::Drawing::Point(161, 0);
+			   this->port1->Location = System::Drawing::Point(143, 0);
 			   this->port1->Name = L"port1";
 			   this->port1->Size = System::Drawing::Size(30, 24);
 			   this->port1->TabIndex = 4;
@@ -259,7 +247,7 @@ private: System::ComponentModel::IContainer^ components;
 			   // panel1
 			   // 
 			   this->panel1->BackColor = System::Drawing::Color::MediumSlateBlue;
-			   this->panel1->Controls->Add(this->tableLayoutPanel1);
+			   this->panel1->Controls->Add(this->tableLayoutPanel3);
 			   this->panel1->Location = System::Drawing::Point(1, 1);
 			   this->panel1->Name = L"panel1";
 			   this->panel1->Size = System::Drawing::Size(537, 32);
@@ -270,11 +258,11 @@ private: System::ComponentModel::IContainer^ components;
 			   this->tableLayoutPanel2->BackColor = System::Drawing::Color::Transparent;
 			   this->tableLayoutPanel2->ColumnCount = 3;
 			   this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				   59.17603F)));
+				   47.78157F)));
 			   this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				   40.82397F)));
+				   52.21843F)));
 			   this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
-				   119)));
+				   176)));
 			   this->tableLayoutPanel2->Controls->Add(this->port1, 1, 0);
 			   this->tableLayoutPanel2->Controls->Add(this->Status1, 2, 0);
 			   this->tableLayoutPanel2->Controls->Add(this->IP1, 0, 0);
@@ -283,8 +271,31 @@ private: System::ComponentModel::IContainer^ components;
 			   this->tableLayoutPanel2->Name = L"tableLayoutPanel2";
 			   this->tableLayoutPanel2->RowCount = 1;
 			   this->tableLayoutPanel2->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
-			   this->tableLayoutPanel2->Size = System::Drawing::Size(387, 43);
+			   this->tableLayoutPanel2->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
+			   this->tableLayoutPanel2->Size = System::Drawing::Size(470, 43);
 			   this->tableLayoutPanel2->TabIndex = 8;
+			   // 
+			   // tableLayoutPanel3
+			   // 
+			   this->tableLayoutPanel3->BackColor = System::Drawing::Color::Transparent;
+			   this->tableLayoutPanel3->ColumnCount = 3;
+			   this->tableLayoutPanel3->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				   47.78157F)));
+			   this->tableLayoutPanel3->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				   52.21843F)));
+			   this->tableLayoutPanel3->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
+				   176)));
+			   this->tableLayoutPanel3->Controls->Add(this->statusTitle, 2, 0);
+			   this->tableLayoutPanel3->Controls->Add(this->IPTitle, 0, 0);
+			   this->tableLayoutPanel3->Controls->Add(this->PortTitle, 1, 0);
+			   this->tableLayoutPanel3->ForeColor = System::Drawing::Color::Black;
+			   this->tableLayoutPanel3->Location = System::Drawing::Point(11, 3);
+			   this->tableLayoutPanel3->Name = L"tableLayoutPanel3";
+			   this->tableLayoutPanel3->RowCount = 1;
+			   this->tableLayoutPanel3->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
+			   this->tableLayoutPanel3->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
+			   this->tableLayoutPanel3->Size = System::Drawing::Size(470, 43);
+			   this->tableLayoutPanel3->TabIndex = 9;
 			   // 
 			   // MyForm
 			   // 
@@ -299,11 +310,11 @@ private: System::ComponentModel::IContainer^ components;
 			   this->Name = L"MyForm";
 			   this->Text = L"MyForm";
 			   this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
-			   this->tableLayoutPanel1->ResumeLayout(false);
-			   this->tableLayoutPanel1->PerformLayout();
 			   this->panel1->ResumeLayout(false);
 			   this->tableLayoutPanel2->ResumeLayout(false);
 			   this->tableLayoutPanel2->PerformLayout();
+			   this->tableLayoutPanel3->ResumeLayout(false);
+			   this->tableLayoutPanel3->PerformLayout();
 			   this->ResumeLayout(false);
 			   this->PerformLayout();
 
